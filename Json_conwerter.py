@@ -23,7 +23,7 @@ def test_argv():
         elif sys.argv[2].endswith(".yaml"):
             file_2 = sys.argv[2]
             return file_1, file_2
-        return False, False
+        return None, None
     
     elif len(sys.argv) > 1 and len(sys.argv) != 3:
         print("Inwalid number of argument")
@@ -31,19 +31,25 @@ def test_argv():
     else:
         print("0 argument")
         pass
-    return False, False
+    return None, None
 
 def file_existing(file_1, file_2):
     if os.path.exists(file_1):
-        print("Plik istnieje.")
+        print("Plik istnieje")
+        pass
     else:
         raise(TimeoutError)
+
 
 def json_to_xml(file_1, file_2):
     pass
 
 def json_to_yaml(file_1, file_2):
-    pass
+    with open(file_1, "r") as file:
+        data = json.load(file)
+    file_yaml = yaml.dump(data, sort_keys=False)
+    with open(file_2, "w") as file:
+        file.write(file_yaml)
 
 def yaml_to_json(file_1, file_2):
     pass
@@ -57,8 +63,4 @@ if __name__=="__main__":
     print(file_1, file_2)
     # print(type(file_1))
     if type(file_1) == str:
-        data = file_existing(file_1, file_2)
-        
-    
-
-    
+        file_existing(file_1, file_2)
