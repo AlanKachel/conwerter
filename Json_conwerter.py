@@ -1,9 +1,10 @@
-# Gówny plik programu do conwersji
+# Gówny plik programu do konwersji json xml yaml
 import json
 import yaml
 import xml.etree.cElementTree as ET
 import sys
 import os
+import xmltodict
 
 def test_argv():
     if len(sys.argv) == 3:
@@ -33,7 +34,7 @@ def test_argv():
         pass
     return None, None
 
-def file_existing(file_1, file_2):
+def file_existing(file_1):
     if os.path.exists(file_1):
         print("Plik istnieje")
         pass
@@ -42,8 +43,11 @@ def file_existing(file_1, file_2):
 
 
 def json_to_xml(file_1, file_2):
-    pass
-
+    with open(file_1, "r") as file:
+        data = json.load(file)
+    xml_data = xmltodict.unparse(data, pretty=True)
+    with open(file_2, 'w', encoding='utf-8') as file:
+        file.write(xml_data)
 def json_to_yaml(file_1, file_2):
     with open(file_1, "r") as file:
         data = json.load(file)
@@ -52,15 +56,25 @@ def json_to_yaml(file_1, file_2):
         file.write(file_yaml)
 
 def yaml_to_json(file_1, file_2):
-    pass
+    with open(file_1, "r") as file:
+        data = yaml.safe_load(file)
+
+    with open(file_2, "w") as file:
+        json.dump(data, file)
+
 
 def xml_to_json(file_1, file_2):
-    pass
+    with open(file_1, 'r', encoding='utf-8') as file:
+        xml_content = file.read()
+    data_dict = xmltodict.parse(xml_content)
+    with open(file_2, "w") as file:
+        json.dump(data_dict, file)
 
 
 if __name__=="__main__":
     file_1, file_2 = test_argv()
     print(file_1, file_2)
-    # print(type(file_1))
     if type(file_1) == str:
-        file_existing(file_1, file_2)
+        file_existing(file_1)
+        xml_to_json(file_1, file_2)
+
