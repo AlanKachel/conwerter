@@ -1,7 +1,6 @@
 # Gówny plik programu do konwersji json xml yaml
 import json
 import yaml
-import xml.etree.cElementTree as ET
 import sys
 import os
 import xmltodict
@@ -33,6 +32,13 @@ def test_argv():
         print("0 argument")
         pass
     return None, None
+def file_name_distributor(file_1, file_2):
+    tem_list = file_1.split(".")
+    file_exp_1 = tem_list[len(tem_list)-1]
+
+    tem_list = file_2.split(".")
+    file_exp_2 = tem_list[len(tem_list)-1]
+    return file_exp_1, file_exp_2
 
 def file_existing(file_1):
     if os.path.exists(file_1):
@@ -48,6 +54,7 @@ def json_to_xml(file_1, file_2):
     xml_data = xmltodict.unparse(data, pretty=True)
     with open(file_2, 'w', encoding='utf-8') as file:
         file.write(xml_data)
+
 def json_to_yaml(file_1, file_2):
     with open(file_1, "r") as file:
         data = json.load(file)
@@ -70,11 +77,43 @@ def xml_to_json(file_1, file_2):
     with open(file_2, "w") as file:
         json.dump(data_dict, file)
 
+def xml_to_yaml(file_1, file_2):
+    with open(file_1, 'r', encoding='utf-8') as file:
+        xml_content = file.read()
+    data_dict = xmltodict.parse(xml_content)
+    file_yaml = yaml.dump(data_dict, sort_keys=False)
+    with open(file_2, "w") as file:
+        file.write(file_yaml)
+
+def yaml_to_xml(file_1, file_2):
+    with open(file_1, "r") as file:
+        data = yaml.safe_load(file)
+    xml_data = xmltodict.unparse(data, pretty=True)
+    with open(file_2, 'w', encoding='utf-8') as file:
+        file.write(xml_data)
 
 if __name__=="__main__":
-    file_1, file_2 = test_argv()
+    file_1, file_2= test_argv()
     print(file_1, file_2)
     if type(file_1) == str:
         file_existing(file_1)
-        xml_to_json(file_1, file_2)
-
+        file_exp_1, file_exp_2 = file_name_distributor(file_1, file_2)
+        match file_exp_1:
+            case "json":
+                match file_exp_2:
+                    case "xml":
+                        json_to_xml(file_1, file_2)
+                    case "yaml":
+                        json_to_yaml(file_1, file_2)
+            case "xml":
+                match file_exp_2:
+                    case "json":
+                        xml_to_json(file_1, file_2)
+                    case "yaml":
+                        xml_to_yaml(file_1, file_2)
+            case "yaml":
+                match file_exp_2:
+                    case "json":
+                        yaml_to_json(file_1, file_2)
+                    case "xml":
+                        yaml_to_xml(file_1, file_2)
