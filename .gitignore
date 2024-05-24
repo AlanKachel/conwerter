@@ -1,2 +1,6 @@
 test.py
-.venv
+*.venv
+*.json
+*.xml
+*.yalm
+*.yml
