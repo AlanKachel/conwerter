@@ -29,7 +29,7 @@ def test_argv():
         print("Inwalid number of argument")
         raise(NameError)
     else:
-        print("0 argument")
+        print("No arguments")
         pass
     return None, None
 def file_name_distributor(file_1, file_2):
@@ -42,7 +42,6 @@ def file_name_distributor(file_1, file_2):
 
 def file_existing(file_1):
     if os.path.exists(file_1):
-        print("Plik istnieje")
         pass
     else:
         raise(TimeoutError)
@@ -94,7 +93,6 @@ def yaml_to_xml(file_1, file_2):
 
 if __name__=="__main__":
     file_1, file_2= test_argv()
-    print(file_1, file_2)
     if type(file_1) == str:
         file_existing(file_1)
         file_exp_1, file_exp_2 = file_name_distributor(file_1, file_2)
@@ -103,17 +101,23 @@ if __name__=="__main__":
                 match file_exp_2:
                     case "xml":
                         json_to_xml(file_1, file_2)
+                        print("Task successful")
                     case "yaml":
                         json_to_yaml(file_1, file_2)
+                        print("Task successful")
             case "xml":
                 match file_exp_2:
                     case "json":
                         xml_to_json(file_1, file_2)
+                        print("Task successful")
                     case "yaml":
                         xml_to_yaml(file_1, file_2)
+                        print("Task successful")
             case "yaml":
                 match file_exp_2:
                     case "json":
                         yaml_to_json(file_1, file_2)
+                        print("Task successful")
                     case "xml":
                         yaml_to_xml(file_1, file_2)
+                        print("Task successful")

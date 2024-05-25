@@ -4,3 +4,5 @@ test.py
 *.xml
 *.yaml
 *.yml
+build
+*.spec
