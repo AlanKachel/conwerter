@@ -32,11 +32,11 @@ jobs:
 
     - name: Build .exe
       run: |
-        pyinstaller --onefile your_script.py
+        pyinstaller --onefile Json_conwerter.py
       shell: pwsh
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: your-executable
-        path: dist/your_script.exe
+        path: dist/Json_conwerter.exe
