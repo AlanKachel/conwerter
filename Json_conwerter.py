@@ -52,7 +52,6 @@ def json_to_xml(file_1, file_2):
     with open(file_1, "r") as file:
         data = json.load(file)
     
-    # Ensure there is exactly one root element
     if not isinstance(data, dict) or len(data) != 1:
         data = {"root": data}
 
