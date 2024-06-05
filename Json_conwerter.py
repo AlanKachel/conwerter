@@ -26,12 +26,13 @@ def test_argv():
         return None, None
     
     elif len(sys.argv) > 1 and len(sys.argv) != 3:
-        print("Inwalid number of argument")
+        print("Invalid number of arguments")
         raise(NameError)
     else:
         print("No arguments")
         pass
     return None, None
+
 def file_name_distributor(file_1, file_2):
     tem_list = file_1.split(".")
     file_exp_1 = tem_list[len(tem_list)-1]
@@ -44,12 +45,17 @@ def file_existing(file_1):
     if os.path.exists(file_1):
         pass
     else:
+        print("Invalid file name, try again!")
         raise(TimeoutError)
-
 
 def json_to_xml(file_1, file_2):
     with open(file_1, "r") as file:
         data = json.load(file)
+    
+    # Ensure there is exactly one root element
+    if not isinstance(data, dict) or len(data) != 1:
+        data = {"root": data}
+
     xml_data = xmltodict.unparse(data, pretty=True)
     with open(file_2, 'w', encoding='utf-8') as file:
         file.write(xml_data)
@@ -87,6 +93,10 @@ def xml_to_yaml(file_1, file_2):
 def yaml_to_xml(file_1, file_2):
     with open(file_1, "r") as file:
         data = yaml.safe_load(file)
+    
+    if not isinstance(data, dict) or len(data) != 1:
+        data = {"root": data}
+
     xml_data = xmltodict.unparse(data, pretty=True)
     with open(file_2, 'w', encoding='utf-8') as file:
         file.write(xml_data)
